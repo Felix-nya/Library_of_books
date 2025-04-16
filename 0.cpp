@@ -23,10 +23,11 @@ PNode CreateNode(string name, string i)
 	return new Node(name, i);
 }
 
-void AddFirst(PNode NewNode, PNode Head)
+PNode AddFirst(PNode NewNode, PNode Head)
 {
 	NewNode->next = Head;
 	Head = NewNode;
+	return Head;
 }
 
 void AddAfter(PNode q, PNode NewNode) {
@@ -34,28 +35,29 @@ void AddAfter(PNode q, PNode NewNode) {
 	q->next = NewNode;
 }
 
-void AddLast(PNode NewNode, PNode) {
+PNode AddLast(PNode NewNode, PNode Head) {
 	PNode q = Head;
 	if (Head == NULL) {
-		AddFirst(NewNode);
-		return;
+		return AddFirst(NewNode, Head); //Head = AddFirst(NewNode,Head); return Head;
 	}
 	while (q->next) q = q->next;
 	AddAfter(q, NewNode);
+	return Head;
 }
 
-void DeleteNode(PNode OldNode) {
+PNode DeleteNode(PNode OldNode, PNode Head) {
 	PNode q = Head;
 	if (Head == OldNode) Head = OldNode->next;
 	else {
 		while (q && q->next != OldNode) q = q->next;
-		if (q == NULL) return;
+		if (q == NULL) return Head;
 		q->next = OldNode->next;
 	}
 	delete OldNode;
+	return Head;
 }
 
-void showList() {
+void showList(PNode Head) {
 	PNode q = Head;
 	int n = 1;
 	while (q) {
@@ -65,7 +67,7 @@ void showList() {
 	}
 }
 
-void DeleteList() {
+void DeleteList(PNode Head) {
 	PNode q = Head;
 	PNode nextNode;
 
@@ -74,10 +76,10 @@ void DeleteList() {
 		delete q;
 		q = nextNode;
 	}
-	Head = NULL;
+	//Head = NULL;
 }
 
-void score() {
+int score(PNode Head) {
 	int n = 0;
 	PNode q = Head;
 	while (q) {
@@ -85,21 +87,22 @@ void score() {
 		q = q->next;
 	}
 	cout << "Количество элементов - " << n << endl;
+	return n;
 }
 
-void Interface() {
+void Interface(PNode Head) {
 	cout << endl << setw(35) << left << "Управление на стрелочки" << setw(35) << left << "[A] - Для добавления в список" << setw(35) << left << "[E] - Для завершения программы" << endl;
 	for (int i = 0; i < 119; i++) cout << "_";
 	for (int i = 0; i < 2; i++) cout << endl;
 	cout << setw(4) << left << "№" << setw(30) << left << "Автор" << setw(50) << left << "Название" << endl;
 	for (int i = 0; i < 119; i++) cout << "_";
 	cout << endl;
-	showList();
+	showList(Head);
 }
 
-void Programm() {
+void Programm(PNode Head) {
 	char ch = '\0';
-	Interface();
+	Interface(Head);
 	do {
 		ch = _getch();
 		if (ch == 'a' || ch == 'A' || ch == 'f' || ch == 'F' || ch == 'ф' || ch == 'Ф' || ch == 'а' || ch == 'А') {
@@ -108,11 +111,12 @@ void Programm() {
 			getline(cin, aut);
 			cout << "Введите название : ";
 			getline(cin, nam);
-			AddLast(CreateNode(aut, nam));
+			AddLast(CreateNode(aut, nam),Head);
 		}
 		system("cls");
-		Interface();
+		Interface(Head);
 	} while (ch != 'у' && ch != 'У' && ch != 'e' && ch != 'E' && ch != 't' && ch != 'T' && ch != 'е' && ch != 'Е');
+	DeleteList(Head);
 }
 
 int main()
@@ -121,10 +125,5 @@ int main()
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	PNode Head = NULL;
-	/*AddLast(CreateNode("Пушкин", "Евгений Онегин"));
-	AddLast(CreateNode("Есенин", "Берёза"));
-	AddLast(CreateNode("Грибоедов", "Горе от ума"));
-	Interface();*/
-	Programm();
 	return 0;
 }

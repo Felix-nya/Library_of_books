@@ -16,14 +16,14 @@ struct Node {
 
 typedef Node* PNode;
 
-PNode Head = NULL;
+//PNode Head = NULL;
 
 PNode CreateNode(string name, string i)
 {
 	return new Node(name, i);
 }
 
-void AddFirst(PNode NewNode)
+void AddFirst(PNode NewNode, PNode Head)
 {
 	NewNode->next = Head;
 	Head = NewNode;
@@ -34,7 +34,7 @@ void AddAfter(PNode q, PNode NewNode) {
 	q->next = NewNode;
 }
 
-void AddLast(PNode NewNode) {
+void AddLast(PNode NewNode, PNode) {
 	PNode q = Head;
 	if (Head == NULL) {
 		AddFirst(NewNode);
@@ -120,6 +120,7 @@ int main()
 	setlocale(LC_ALL, "russian");
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
+	PNode Head = NULL;
 	/*AddLast(CreateNode("Пушкин", "Евгений Онегин"));
 	AddLast(CreateNode("Есенин", "Берёза"));
 	AddLast(CreateNode("Грибоедов", "Горе от ума"));

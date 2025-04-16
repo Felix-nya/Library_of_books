@@ -5,7 +5,16 @@
 #include <conio.h>
 #include <iomanip> 
 #include <cstdlib>
+#include <consoleapi.h>
 using namespace std;
+
+void gotoxy(short x, short y)       
+{ 
+    HANDLE term = GetStdHandle(STD_OUTPUT_HANDLE);
+    COORD position = { x, y };
+
+    SetConsoleCursorPosition(term, position); 
+}
 
 struct Node {
 	string author;
@@ -113,7 +122,8 @@ void Programm(PNode Head) {
 			getline(cin, nam);
 			AddLast(CreateNode(aut, nam),Head);
 		}
-		system("cls");
+		gotoxy(0,0);
+		//system("cls");
 		Interface(Head);
 	} while (ch != 'у' && ch != 'У' && ch != 'e' && ch != 'E' && ch != 't' && ch != 'T' && ch != 'е' && ch != 'Е');
 	DeleteList(Head);
